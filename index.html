@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Neondust Labs | Future-Ready Mobile Apps & Games</title>
+  <meta name="description" content="Neondust Labs is a mobile-first software studio building premium mobile apps, games, and AI-ready digital systems. Operated by Neon Dust LLC." />
+  <meta name="theme-color" content="#020617" />
+
+  <meta property="og:title" content="Neondust Labs | Mobile Apps & Games" />
+  <meta property="og:description" content="Premium mobile apps, games, AI-ready systems, and App Store-ready product experiences." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://neondustlabs.com" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "ui-sans-serif", "system-ui", "Segoe UI", "Arial", "sans-serif"],
+          },
+          boxShadow: {
+            glow: "0 0 80px rgba(59,130,246,.35)",
+            glowStrong: "0 0 120px rgba(59,130,246,.45)",
+            soft: "0 30px 90px rgba(0,0,0,.42)",
+          },
+          animation: {
+            float: "float 7s ease-in-out infinite",
+            shimmer: "shimmer 5s linear infinite",
+            pulseGlow: "pulseGlow 4s ease-in-out infinite",
+            orbit: "orbit 18s linear infinite",
+            marquee: "marquee 28s linear infinite",
+            gridMove: "gridMove 26s linear infinite",
+          },
+          keyframes: {
+            float: {
+              "0%,100%": { transform: "translateY(0)" },
+              "50%": { transform: "translateY(-18px)" },
+            },
+            shimmer: {
+              "0%": { backgroundPosition: "-220% 0" },
+              "100%": { backgroundPosition: "220% 0" },
+            },
+            pulseGlow: {
+              "0%,100%": { opacity: ".52", transform: "scale(1)" },
+              "50%": { opacity: ".9", transform: "scale(1.08)" },
+            },
+            orbit: {
+              "0%": { transform: "rotate(0deg) translateX(18px) rotate(0deg)" },
+              "100%": { transform: "rotate(360deg) translateX(18px) rotate(-360deg)" },
+            },
+            marquee: {
+              "0%": { transform: "translateX(0)" },
+              "100%": { transform: "translateX(-50%)" },
+            },
+            gridMove: {
+              "0%": { backgroundPosition: "0 0" },
+              "100%": { backgroundPosition: "90px 90px" },
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    :root {
+      --mx: 50%;
+      --my: 50%;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      background: #020617;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -5;
+      background:
+        radial-gradient(circle at var(--mx) var(--my), rgba(59,130,246,.16), transparent 26%),
+        radial-gradient(circle at 20% 20%, rgba(37,99,235,.22), transparent 34%),
+        radial-gradient(circle at 86% 12%, rgba(14,165,233,.14), transparent 34%),
+        radial-gradient(circle at 55% 76%, rgba(99,102,241,.18), transparent 38%),
+        linear-gradient(180deg, #020617 0%, #0f172a 45%, #020617 100%);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -4;
+      opacity: .08;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    .grid-bg::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(148,163,184,.065) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148,163,184,.065) 1px, transparent 1px);
+      background-size: 90px 90px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.85), transparent 75%);
+      animation: gridMove 26s linear infinite;
+      pointer-events: none;
+    }
+
+    .glass {
+      background: rgba(15, 23, 42, .64);
+      border: 1px solid rgba(148, 163, 184, .16);
+      backdrop-filter: blur(20px);
+    }
+
+    .spotlight-card {
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+      overflow: hidden;
+    }
+
+    .spotlight-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity .2s ease;
+      background: radial-gradient(500px circle at var(--card-x, 50%) var(--card-y, 50%), rgba(96,165,250,.18), transparent 42%);
+      pointer-events: none;
+    }
+
+    .spotlight-card:hover::before { opacity: 1; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .85s ease, transform .85s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .phone-shell {
+      background:
+        linear-gradient(145deg, rgba(255,255,255,.18), rgba(255,255,255,.045)),
+        linear-gradient(180deg, #111827, #020617);
+    }
+
+    .screen-scroll {
+      animation: screenScroll 10s ease-in-out infinite;
+    }
+
+    @keyframes screenScroll {
+      0%, 18% { transform: translateY(0); }
+      45%, 60% { transform: translateY(-154px); }
+      82%, 100% { transform: translateY(0); }
+    }
+
+    .pin-step {
+      opacity: .34;
+      transform: translateY(8px);
+      transition: opacity .35s ease, transform .35s ease;
+    }
+
+    .pin-step.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    .meter {
+      background: linear-gradient(90deg, rgba(59,130,246,1), rgba(125,211,252,1), rgba(99,102,241,1));
+      background-size: 220% 100%;
+      animation: shimmer 5s linear infinite;
+    }
+
+    .game-cell {
+      aspect-ratio: 1/1;
+      border-radius: 1.1rem;
+      border: 1px solid rgba(255,255,255,.13);
+      background:
+        radial-gradient(circle at 30% 22%, rgba(255,255,255,.2), transparent 20%),
+        linear-gradient(145deg, rgba(59,130,246,.55), rgba(30,41,59,.9));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 14px 34px rgba(0,0,0,.25);
+      transition: transform .22s ease, background .22s ease, opacity .22s ease;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      color: white;
+      user-select: none;
+    }
+
+    .game-cell.pop {
+      animation: pop .35s ease;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.16); }
+      100% { transform: scale(1); }
+    }
+
+    .particle {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(96,165,250,.9);
+      pointer-events: none;
+      animation: particle .55s ease-out forwards;
+    }
+
+    @keyframes particle {
+      to {
+        transform: translate(var(--dx), var(--dy)) scale(.2);
+        opacity: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="font-sans antialiased">
+  <div class="fixed inset-0 -z-10 grid-bg"></div>
+  <div class="fixed left-1/2 top-16 -z-10 h-80 w-80 -translate-x-1/2 rounded-full bg-blue-500/20 blur-3xl animate-pulseGlow"></div>
+
+  <!-- NAV -->
+  <nav class="sticky top-0 z-50 border-b border-white/10 bg-slate-950/55 backdrop-blur-2xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
+      <a href="#top" class="group flex items-center gap-3">
+        <div class="relative h-10 w-10 rounded-2xl bg-blue-600 shadow-glow grid place-items-center">
+          <span class="absolute inset-0 rounded-2xl bg-blue-400/30 blur-md"></span>
+          <span class="relative text-sm font-black">N</span>
+        </div>
+        <div>
+          <p class="text-lg font-black tracking-tight text-white">Neondust Labs</p>
+          <p class="text-[11px] uppercase tracking-[0.28em] text-slate-400">Mobile Studio</p>
+        </div>
+      </a>
+
+      <div class="hidden items-center gap-8 text-xs font-semibold uppercase tracking-[0.22em] text-slate-300 md:flex">
+        <a href="#what" class="hover:text-blue-400 transition">Apps & Games</a>
+        <a href="#story" class="hover:text-blue-400 transition">Story</a>
+        <a href="#showcase" class="hover:text-blue-400 transition">Showcase</a>
+        <a href="#demo" class="hover:text-blue-400 transition">Demo</a>
+        <a href="#legal" class="hover:text-blue-400 transition">Legal</a>
+        <a href="mailto:hello@neondustlabs.com" class="rounded-full border border-blue-400/30 px-4 py-2 text-blue-300 hover:border-blue-300 hover:bg-blue-500/10 transition">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header id="top" class="relative mx-auto max-w-7xl px-6 pb-24 pt-20 md:pb-36 md:pt-28">
+    <div class="grid items-center gap-14 lg:grid-cols-[1.05fr_.95fr]">
+      <div class="reveal">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-400/25 bg-blue-500/10 px-4 py-2 text-sm text-blue-100">
+          <span class="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_18px_rgba(52,211,153,.7)]"></span>
+          Product studio for mobile apps, games, and AI-ready systems
+        </div>
+
+        <h1 class="max-w-4xl text-5xl font-black tracking-tight text-white md:text-7xl lg:text-8xl">
+          Crafting
+          <span class="bg-gradient-to-r from-blue-200 via-sky-300 to-indigo-300 bg-[length:220%_100%] bg-clip-text text-transparent animate-shimmer">
+            future-ready
+          </span>
+          mobile experiences.
+        </h1>
+
+        <p class="mt-8 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
+          Neondust Labs is a mobile-first software studio based in Fort Worth, Texas.
+          We design and develop premium mobile applications, engaging mobile games,
+          and scalable AI-ready digital systems.
+        </p>
+
+        <div class="mt-10 flex flex-col gap-4 sm:flex-row">
+          <a href="#showcase" class="rounded-full bg-blue-600 px-8 py-4 text-center font-bold text-white shadow-glow transition hover:scale-[1.02] hover:bg-blue-500">
+            View Showcase
+          </a>
+          <a href="mailto:hello@neondustlabs.com" class="rounded-full border border-white/15 px-8 py-4 text-center font-bold text-slate-200 transition hover:border-blue-300/60 hover:bg-white/5">
+            hello@neondustlabs.com
+          </a>
+        </div>
+
+        <div class="mt-10 grid max-w-2xl grid-cols-3 gap-4 text-center">
+          <div class="glass spotlight-card rounded-2xl p-4">
+            <p class="text-2xl font-black text-white">iOS</p>
+            <p class="mt-1 text-xs text-slate-400">Apps</p>
+          </div>
+          <div class="glass spotlight-card rounded-2xl p-4">
+            <p class="text-2xl font-black text-white">Games</p>
+            <p class="mt-1 text-xs text-slate-400">Mobile Play</p>
+          </div>
+          <div class="glass spotlight-card rounded-2xl p-4">
+            <p class="text-2xl font-black text-white">AI</p>
+            <p class="mt-1 text-xs text-slate-400">Systems</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live iPhone mockup -->
+      <div class="reveal relative mx-auto w-full max-w-[440px]">
+        <div class="absolute -inset-10 rounded-[4rem] bg-blue-500/20 blur-3xl"></div>
+
+        <div id="heroPhone" class="phone-shell relative mx-auto h-[650px] w-[312px] rounded-[3.35rem] border border-white/15 p-3 shadow-soft animate-float">
+          <div class="h-full overflow-hidden rounded-[2.75rem] border border-white/10 bg-slate-950">
+            <div class="relative z-20 mx-auto mt-3 h-7 w-28 rounded-full bg-black/80"></div>
+
+            <div class="screen-scroll p-5">
+              <div class="mt-5 rounded-3xl bg-gradient-to-br from-blue-600 to-indigo-700 p-5 shadow-glow">
+                <p class="text-xs uppercase tracking-[0.25em] text-blue-100/80">Neondust Labs</p>
+                <h3 class="mt-4 text-3xl font-black leading-tight">Apps & Games Built to Scale</h3>
+              </div>
+
+              <div class="mt-5 grid grid-cols-2 gap-3">
+                <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <div class="mb-8 h-8 w-8 rounded-xl bg-blue-500/30"></div>
+                  <p class="text-sm font-bold">Mobile Apps</p>
+                  <p class="mt-1 text-xs text-slate-400">Clean flows</p>
+                </div>
+                <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <div class="mb-8 h-8 w-8 rounded-xl bg-sky-500/30"></div>
+                  <p class="text-sm font-bold">Games</p>
+                  <p class="mt-1 text-xs text-slate-400">Polished play</p>
+                </div>
+              </div>
+
+              <div class="mt-5 rounded-3xl border border-white/10 bg-white/5 p-4">
+                <div class="flex items-center justify-between">
+                  <p class="text-sm font-bold">Launch System</p>
+                  <span class="rounded-full bg-emerald-400/10 px-3 py-1 text-xs text-emerald-300">Preparing</span>
+                </div>
+                <div class="mt-4 space-y-3">
+                  <div class="meter h-2 rounded-full"></div>
+                  <div class="meter h-2 w-4/5 rounded-full opacity-70"></div>
+                  <div class="meter h-2 w-3/5 rounded-full opacity-50"></div>
+                </div>
+              </div>
+
+              <div class="mt-5 rounded-3xl bg-slate-900 p-4">
+                <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Focus</p>
+                <p class="mt-2 text-lg font-black">Performance. Simplicity. Delight.</p>
+              </div>
+
+              <div class="mt-5 rounded-3xl border border-white/10 bg-white/5 p-4">
+                <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Product Signals</p>
+                <div class="mt-4 grid grid-cols-3 gap-2">
+                  <div class="rounded-2xl bg-blue-500/20 p-3 text-center text-xs font-bold">UX</div>
+                  <div class="rounded-2xl bg-sky-500/20 p-3 text-center text-xs font-bold">Data</div>
+                  <div class="rounded-2xl bg-indigo-500/20 p-3 text-center text-xs font-bold">AI</div>
+                </div>
+              </div>
+
+              <div class="mt-5 rounded-3xl bg-gradient-to-br from-slate-800 to-slate-950 p-5">
+                <p class="text-sm text-slate-300">Coming next</p>
+                <h4 class="mt-2 text-2xl font-black">App Store-ready product experiences.</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute -right-4 top-20 hidden rounded-2xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur-xl lg:block animate-orbit">
+          <p class="text-xs font-bold text-blue-200">AI-ready</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MARQUEE -->
+  <section class="border-y border-white/10 bg-white/[0.03] py-4 overflow-hidden">
+    <div class="animate-marquee flex w-[200%] gap-8 whitespace-nowrap text-sm font-bold uppercase tracking-[0.28em] text-slate-400">
+      <span>Mobile Apps</span><span>•</span><span>Mobile Games</span><span>•</span><span>AI-Ready Systems</span><span>•</span><span>App Store Polish</span><span>•</span><span>Product Strategy</span><span>•</span>
+      <span>Mobile Apps</span><span>•</span><span>Mobile Games</span><span>•</span><span>AI-Ready Systems</span><span>•</span><span>App Store Polish</span><span>•</span><span>Product Strategy</span><span>•</span>
+    </div>
+  </section>
+
+  <!-- WHAT WE DO -->
+  <section id="what" class="mx-auto max-w-7xl px-6 py-24">
+    <div class="reveal mx-auto max-w-3xl text-center">
+      <p class="text-sm font-bold uppercase tracking-[0.3em] text-blue-400">What We Do</p>
+      <h2 class="mt-4 text-4xl font-black tracking-tight md:text-6xl">Mobile-first products with premium execution.</h2>
+      <p class="mt-6 text-lg leading-8 text-slate-400">
+        We build digital products that feel fast, clean, polished, and ready for real users.
+      </p>
+    </div>
+
+    <div class="mt-16 grid gap-6 md:grid-cols-3">
+      <article class="reveal glass spotlight-card rounded-3xl p-8">
+        <div class="mb-8 h-12 w-12 rounded-2xl bg-blue-500/20 grid place-items-center text-2xl">📱</div>
+        <h3 class="text-2xl font-black text-white">Mobile App Development</h3>
+        <p class="mt-4 leading-7 text-slate-400">
+          High-quality iOS and mobile product experiences with modern interfaces, clean architecture,
+          and scalable foundations.
+        </p>
+      </article>
+
+      <article class="reveal glass spotlight-card rounded-3xl p-8">
+        <div class="mb-8 h-12 w-12 rounded-2xl bg-sky-500/20 grid place-items-center text-2xl">🎮</div>
+        <h3 class="text-2xl font-black text-white">Mobile Game Development</h3>
+        <p class="mt-4 leading-7 text-slate-400">
+          Physics-driven gameplay, smooth loops, polished effects, retention design, and monetization-ready product structure.
+        </p>
+      </article>
+
+      <article class="reveal glass spotlight-card rounded-3xl p-8">
+        <div class="mb-8 h-12 w-12 rounded-2xl bg-indigo-500/20 grid place-items-center text-2xl">🧠</div>
+        <h3 class="text-2xl font-black text-white">AI-Ready Systems</h3>
+        <p class="mt-4 leading-7 text-slate-400">
+          Intelligent systems, backend-ready foundations, analytics-friendly structure, and product growth support.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- SCROLL STORY -->
+  <section id="story" class="relative border-y border-white/10 bg-slate-950/50 py-28">
+    <div class="mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-[.8fr_1.2fr]">
+      <div class="lg:sticky lg:top-32 lg:h-fit">
+        <p class="text-sm font-bold uppercase tracking-[0.3em] text-blue-400">Scroll Story</p>
+        <h2 class="mt-4 text-4xl font-black tracking-tight md:text-6xl">From idea to App Store-ready.</h2>
+        <p class="mt-6 text-lg leading-8 text-slate-400">
+          The site now tells a product-building story while the user scrolls.
+        </p>
+      </div>
+
+      <div class="space-y-6">
+        <div class="pin-step glass rounded-[2rem] p-8" data-step>
+          <p class="text-sm font-bold text-blue-300">01 / Strategy</p>
+          <h3 class="mt-3 text-3xl font-black">Define the product signal.</h3>
+          <p class="mt-4 leading-8 text-slate-400">Audience, use case, core loop, product positioning, and long-term roadmap.</p>
+        </div>
+
+        <div class="pin-step glass rounded-[2rem] p-8" data-step>
+          <p class="text-sm font-bold text-blue-300">02 / Prototype</p>
+          <h3 class="mt-3 text-3xl font-black">Build fast. Validate faster.</h3>
+          <p class="mt-4 leading-8 text-slate-400">Interactive prototypes, responsive UI, game-feel testing, and user-flow validation.</p>
+        </div>
+
+        <div class="pin-step glass rounded-[2rem] p-8" data-step>
+          <p class="text-sm font-bold text-blue-300">03 / Polish</p>
+          <h3 class="mt-3 text-3xl font-black">Make it feel premium.</h3>
+          <p class="mt-4 leading-8 text-slate-400">Micro-interactions, motion, onboarding, visual rhythm, performance, and retention details.</p>
+        </div>
+
+        <div class="pin-step glass rounded-[2rem] p-8" data-step>
+          <p class="text-sm font-bold text-blue-300">04 / Launch</p>
+          <h3 class="mt-3 text-3xl font-black">Prepare for real users.</h3>
+          <p class="mt-4 leading-8 text-slate-400">Legal pages, analytics readiness, store assets, growth systems, and scalable product foundations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- APP STORE SHOWCASE -->
+  <section id="showcase" class="relative overflow-hidden py-28">
+    <div class="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_20%,rgba(59,130,246,.20),transparent_35%),linear-gradient(180deg,transparent,#020617)]"></div>
+
+    <div class="mx-auto max-w-7xl px-6">
+      <div class="reveal mx-auto max-w-3xl text-center">
+        <p class="text-sm font-bold uppercase tracking-[0.3em] text-blue-400">Product Showcase</p>
+        <h2 class="mt-4 text-4xl font-black tracking-tight md:text-6xl">Built for the App Store generation.</h2>
+        <p class="mt-6 text-lg leading-8 text-slate-400">
+          Premium mobile products need more than code. They need polished interfaces, fast interactions,
+          strong retention loops, clean onboarding, and scalable foundations.
+        </p>
+      </div>
+
+      <div class="mt-20 grid items-center gap-12 lg:grid-cols-[.9fr_1.1fr]">
+        <div class="reveal space-y-5">
+          <div class="glass spotlight-card rounded-3xl p-6">
+            <div class="flex items-start gap-4">
+              <div class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-blue-500/20 text-2xl">✨</div>
+              <div>
+                <h3 class="text-xl font-black">Premium App Interfaces</h3>
+                <p class="mt-2 leading-7 text-slate-400">Clean screens, intuitive navigation, responsive layouts, and Apple-style visual hierarchy.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass spotlight-card rounded-3xl p-6">
+            <div class="flex items-start gap-4">
+              <div class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-sky-500/20 text-2xl">🎯</div>
+              <div>
+                <h3 class="text-xl font-black">Game Loops & Retention</h3>
+                <p class="mt-2 leading-7 text-slate-400">Reward systems, progression, daily engagement, polished effects, and monetization-ready design.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass spotlight-card rounded-3xl p-6">
+            <div class="flex items-start gap-4">
+              <div class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-indigo-500/20 text-2xl">🚀</div>
+              <div>
+                <h3 class="text-xl font-black">Launch-Ready Foundations</h3>
+                <p class="mt-2 leading-7 text-slate-400">Prepared for analytics, subscriptions, cloud sync, AI features, and long-term product growth.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal relative">
+          <div class="absolute -inset-10 rounded-[4rem] bg-blue-500/20 blur-3xl"></div>
+
+          <div class="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/[0.03] p-6 shadow-soft">
+            <div class="mb-6 flex items-center justify-between gap-4">
+              <div>
+                <p class="text-sm font-bold uppercase tracking-[0.28em] text-blue-300">Preview Shelf</p>
+                <h3 class="mt-2 text-2xl font-black">Mobile Product Concepts</h3>
+              </div>
+              <span class="hidden rounded-full bg-blue-500/15 px-4 py-2 text-xs font-bold text-blue-200 sm:inline-flex">In Preparation</span>
+            </div>
+
+            <div class="no-scrollbar flex snap-x gap-5 overflow-x-auto pb-3">
+              <div class="min-w-[245px] snap-center rounded-[2rem] border border-white/10 bg-slate-950 p-4">
+                <div class="rounded-[1.5rem] bg-gradient-to-br from-blue-500 to-indigo-700 p-5">
+                  <p class="text-xs uppercase tracking-[0.25em] text-blue-100/80">iOS App</p>
+                  <h4 class="mt-16 text-2xl font-black">Finance Tools</h4>
+                </div>
+                <p class="mt-4 text-sm leading-6 text-slate-400">Personal productivity, tracking, dashboards, and clean daily workflows.</p>
+              </div>
+
+              <div class="min-w-[245px] snap-center rounded-[2rem] border border-white/10 bg-slate-950 p-4">
+                <div class="rounded-[1.5rem] bg-gradient-to-br from-sky-500 to-blue-700 p-5">
+                  <p class="text-xs uppercase tracking-[0.25em] text-blue-100/80">Mobile Game</p>
+                  <h4 class="mt-16 text-2xl font-black">Physics Play</h4>
+                </div>
+                <p class="mt-4 text-sm leading-6 text-slate-400">Smooth mechanics, satisfying effects, progression, and replay value.</p>
+              </div>
+
+              <div class="min-w-[245px] snap-center rounded-[2rem] border border-white/10 bg-slate-950 p-4">
+                <div class="rounded-[1.5rem] bg-gradient-to-br from-indigo-500 to-violet-700 p-5">
+                  <p class="text-xs uppercase tracking-[0.25em] text-blue-100/80">AI System</p>
+                  <h4 class="mt-16 text-2xl font-black">Smart Layers</h4>
+                </div>
+                <p class="mt-4 text-sm leading-6 text-slate-400">Intelligent features prepared for mobile-first user experiences.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal mt-20 grid gap-5 md:grid-cols-4">
+        <div class="spotlight-card rounded-3xl border border-white/10 bg-white/[0.03] p-6">
+          <p class="text-3xl font-black text-white">01</p>
+          <p class="mt-3 font-bold text-blue-300">Concept</p>
+          <p class="mt-2 text-sm leading-6 text-slate-400">Product idea, audience, core loop, and market direction.</p>
+        </div>
+        <div class="spotlight-card rounded-3xl border border-white/10 bg-white/[0.03] p-6">
+          <p class="text-3xl font-black text-white">02</p>
+          <p class="mt-3 font-bold text-blue-300">Prototype</p>
+          <p class="mt-2 text-sm leading-6 text-slate-400">Fast validation with responsive UI and real interactions.</p>
+        </div>
+        <div class="spotlight-card rounded-3xl border border-white/10 bg-white/[0.03] p-6">
+          <p class="text-3xl font-black text-white">03</p>
+          <p class="mt-3 font-bold text-blue-300">Polish</p>
+          <p class="mt-2 text-sm leading-6 text-slate-400">Animations, effects, onboarding, performance, and visual identity.</p>
+        </div>
+        <div class="spotlight-card rounded-3xl border border-white/10 bg-white/[0.03] p-6">
+          <p class="text-3xl font-black text-white">04</p>
+          <p class="mt-3 font-bold text-blue-300">Launch</p>
+          <p class="mt-2 text-sm leading-6 text-slate-400">App Store readiness, legal pages, analytics, and growth systems.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MINI PLAYABLE DEMO -->
+  <section id="demo" class="border-y border-white/10 bg-slate-950/60 py-28">
+    <div class="mx-auto grid max-w-7xl items-center gap-12 px-6 lg:grid-cols-2">
+      <div class="reveal">
+        <p class="text-sm font-bold uppercase tracking-[0.3em] text-blue-400">Interactive Preview</p>
+        <h2 class="mt-4 text-4xl font-black tracking-tight md:text-6xl">A small taste of game feel.</h2>
+        <p class="mt-6 text-lg leading-8 text-slate-400">
+          This lightweight mini demo gives the website a more interactive, product-studio feel.
+          Tap matching tiles to trigger a merge-style effect.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <span class="rounded-full bg-blue-500/15 px-4 py-2 text-sm font-bold text-blue-200">Particle effects</span>
+          <span class="rounded-full bg-blue-500/15 px-4 py-2 text-sm font-bold text-blue-200">Game polish</span>
+          <span class="rounded-full bg-blue-500/15 px-4 py-2 text-sm font-bold text-blue-200">Mobile-ready</span>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="relative mx-auto max-w-md rounded-[2rem] border border-white/10 bg-white/[0.04] p-5 shadow-soft">
+          <div id="particleLayer" class="pointer-events-none absolute inset-0 overflow-hidden rounded-[2rem]"></div>
+
+          <div class="mb-5 flex items-center justify-between">
+            <div>
+              <p class="text-xs font-bold uppercase tracking-[0.28em] text-blue-300">Merge Preview</p>
+              <h3 class="mt-1 text-2xl font-black">Tap tiles</h3>
+            </div>
+            <button id="resetGame" class="rounded-full border border-white/10 px-4 py-2 text-sm font-bold text-slate-300 hover:border-blue-300/60 hover:bg-white/5 transition">Reset</button>
+          </div>
+
+          <div id="gameGrid" class="grid grid-cols-4 gap-3"></div>
+
+          <p class="mt-5 text-center text-sm text-slate-500">
+            Demo only — built to communicate interaction quality.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISION -->
+  <section id="build" class="relative py-24">
+    <div class="absolute inset-0 -z-10 bg-gradient-to-r from-blue-600/10 via-transparent to-indigo-600/10"></div>
+
+    <div class="mx-auto grid max-w-7xl items-center gap-12 px-6 lg:grid-cols-2">
+      <div class="reveal">
+        <p class="text-sm font-bold uppercase tracking-[0.3em] text-blue-400">What We're Preparing</p>
+        <h2 class="mt-4 text-4xl font-black tracking-tight md:text-6xl">A new generation of apps and games.</h2>
+        <p class="mt-6 text-lg leading-8 text-slate-400">
+          Neondust Labs is preparing mobile products focused on performance, simplicity,
+          long-term scalability, and delightful user experiences.
+        </p>
+        <p class="mt-5 text-lg leading-8 text-slate-400">
+          Our direction includes productivity-focused apps, engaging mobile game mechanics,
+          intelligent features, and polished App Store-ready experiences.
+        </p>
+      </div>
+
+      <div class="reveal grid gap-4">
+        <div class="glass spotlight-card rounded-3xl p-6">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xl font-black">Mobile Experience Design</h3>
+            <span class="rounded-full bg-blue-500/15 px-3 py-1 text-xs font-bold text-blue-300">01</span>
+          </div>
+          <p class="mt-3 text-slate-400">Clean interfaces, intuitive flows, and product experiences designed for everyday use.</p>
+        </div>
+
+        <div class="glass spotlight-card rounded-3xl p-6">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xl font-black">Game Mechanics & Retention</h3>
+            <span class="rounded-full bg-blue-500/15 px-3 py-1 text-xs font-bold text-blue-300">02</span>
+          </div>
+          <p class="mt-3 text-slate-400">Reward loops, physics-based systems, progression, monetization, and replayability.</p>
+        </div>
+
+        <div class="glass spotlight-card rounded-3xl p-6">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xl font-black">Scalable Product Foundation</h3>
+            <span class="rounded-full bg-blue-500/15 px-3 py-1 text-xs font-bold text-blue-300">03</span>
+          </div>
+          <p class="mt-3 text-slate-400">Modern architecture prepared for analytics, AI features, cloud systems, and growth.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="mx-auto max-w-7xl px-6 py-24">
+    <div class="reveal mx-auto max-w-4xl text-center">
+      <p class="text-sm font-bold uppercase tracking-[0.3em] text-blue-400">About</p>
+      <h2 class="mt-4 text-4xl font-black tracking-tight md:text-6xl">A boutique studio from Fort Worth, Texas.</h2>
+      <p class="mt-6 text-lg leading-8 text-slate-400">
+        Neondust Labs is the software studio brand operated by Neon Dust LLC.
+        We build mobile apps, games, and future-ready digital systems with a focus on quality,
+        performance, and long-term product value.
+      </p>
+    </div>
+  </section>
+
+  <!-- CONTACT CTA -->
+  <section class="mx-auto max-w-7xl px-6 pb-24">
+    <div class="reveal overflow-hidden rounded-[2rem] border border-blue-400/20 bg-gradient-to-br from-blue-600/20 via-slate-900 to-indigo-700/20 p-8 text-center shadow-glow md:p-14">
+      <h2 class="text-4xl font-black tracking-tight md:text-6xl">Let's build what comes next.</h2>
+      <p class="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-300">
+        For product inquiries, partnerships, or general contact, reach us at:
+      </p>
+      <a href="mailto:hello@neondustlabs.com" class="mt-8 inline-flex rounded-full bg-white px-8 py-4 font-black text-slate-950 transition hover:scale-[1.02]">
+        hello@neondustlabs.com
+      </a>
+    </div>
+  </section>
+
+  <!-- LEGAL -->
+  <section id="legal" class="border-t border-white/10 bg-slate-950/70 py-24">
+    <div class="mx-auto max-w-5xl px-6">
+      <div class="reveal text-center">
+        <p class="text-sm font-bold uppercase tracking-[0.3em] text-blue-400">Legal</p>
+        <h2 class="mt-4 text-4xl font-black tracking-tight md:text-5xl">Privacy Policy & Terms</h2>
+        <p class="mt-5 text-slate-400">Legal information for Neondust Labs, operated by Neon Dust LLC.</p>
+      </div>
+
+      <div class="reveal mt-12 grid gap-6 md:grid-cols-2">
+        <a href="#privacy" class="glass spotlight-card rounded-3xl p-8">
+          <h3 class="text-2xl font-black">Privacy Policy</h3>
+          <p class="mt-3 text-slate-400">How we handle information, contact requests, analytics, and future product data.</p>
+        </a>
+        <a href="#terms" class="glass spotlight-card rounded-3xl p-8">
+          <h3 class="text-2xl font-black">Terms of Use</h3>
+          <p class="mt-3 text-slate-400">Rules for using this website and future Neondust Labs digital products.</p>
+        </a>
+      </div>
+
+      <article id="privacy" class="reveal mt-16 rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 md:p-10">
+        <h3 class="text-3xl font-black">Privacy Policy</h3>
+        <p class="mt-2 text-sm text-slate-500">Last updated: 2026</p>
+
+        <div class="mt-8 space-y-6 text-slate-300 leading-8">
+          <p>This Privacy Policy explains how Neondust Labs, operated by Neon Dust LLC, may collect, use, and protect information through neondustlabs.com and related digital products.</p>
+
+          <div>
+            <h4 class="font-black text-white">1. Information We Collect</h4>
+            <p class="mt-2">We may collect information you voluntarily provide, such as your name, email address, message content, and other details you submit when contacting us. In the future, our apps or games may collect product usage data, device information, analytics data, crash reports, or account-related information where applicable.</p>
+          </div>
+
+          <div>
+            <h4 class="font-black text-white">2. How We Use Information</h4>
+            <p class="mt-2">We may use information to respond to inquiries, improve our website, develop and improve mobile apps and games, analyze product performance, maintain security, and comply with legal obligations.</p>
+          </div>
+
+          <div>
+            <h4 class="font-black text-white">3. Analytics and Cookies</h4>
+            <p class="mt-2">This website may use analytics or similar technologies in the future to understand traffic and improve user experience.</p>
+          </div>
+
+          <div>
+            <h4 class="font-black text-white">4. Sharing Information</h4>
+            <p class="mt-2">We do not sell personal information. We may share limited information with service providers that help operate our website, apps, games, analytics, hosting, or communication systems, or where required by law.</p>
+          </div>
+
+          <div>
+            <h4 class="font-black text-white">5. Children’s Privacy</h4>
+            <p class="mt-2">This general website is not intended to knowingly collect personal information from children. Future child-directed products should include product-specific disclosures where required.</p>
+          </div>
+
+          <div>
+            <h4 class="font-black text-white">6. Contact</h4>
+            <p class="mt-2">For privacy questions, contact us at <a class="text-blue-300 hover:text-blue-200" href="mailto:hello@neondustlabs.com">hello@neondustlabs.com</a>.</p>
+          </div>
+        </div>
+      </article>
+
+      <article id="terms" class="reveal mt-10 rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 md:p-10">
+        <h3 class="text-3xl font-black">Terms of Use</h3>
+        <p class="mt-2 text-sm text-slate-500">Last updated: 2026</p>
+
+        <div class="mt-8 space-y-6 text-slate-300 leading-8">
+          <p>These Terms of Use govern your access to and use of neondustlabs.com and related services provided by Neondust Labs, operated by Neon Dust LLC.</p>
+
+          <div>
+            <h4 class="font-black text-white">1. Use of Website</h4>
+            <p class="mt-2">You may use this website for lawful purposes only. You agree not to misuse the website, interfere with its operation, attempt unauthorized access, or use it in a way that could damage Neondust Labs or others.</p>
+          </div>
+
+          <div>
+            <h4 class="font-black text-white">2. Intellectual Property</h4>
+            <p class="mt-2">All branding, text, design, graphics, and website content are owned by or licensed to Neon Dust LLC unless otherwise stated.</p>
+          </div>
+
+          <div>
+            <h4 class="font-black text-white">3. Product Information</h4>
+            <p class="mt-2">Information about future apps, games, features, or services is provided for general informational purposes and may change without notice.</p>
+          </div>
+
+          <div>
+            <h4 class="font-black text-white">4. No Warranty</h4>
+            <p class="mt-2">This website is provided on an “as is” and “as available” basis. We do not guarantee that the website will always be available, error-free, or uninterrupted.</p>
+          </div>
+
+          <div>
+            <h4 class="font-black text-white">5. Limitation of Liability</h4>
+            <p class="mt-2">To the maximum extent permitted by law, Neon Dust LLC shall not be liable for indirect, incidental, special, consequential, or punitive damages arising from your use of the website.</p>
+          </div>
+
+          <div>
+            <h4 class="font-black text-white">6. Contact</h4>
+            <p class="mt-2">For questions about these Terms, contact <a class="text-blue-300 hover:text-blue-200" href="mailto:hello@neondustlabs.com">hello@neondustlabs.com</a>.</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-white/10 py-12">
+    <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-6 text-center text-sm text-slate-500 md:flex-row md:text-left">
+      <div>
+        <p class="font-black text-slate-300">Neondust Labs</p>
+        <p class="mt-1">Operated by Neon Dust LLC</p>
+        <p class="mt-1">Fort Worth, TX, USA</p>
+      </div>
+
+      <div class="text-center">
+        <a class="text-blue-300 hover:text-blue-200" href="mailto:hello@neondustlabs.com">hello@neondustlabs.com</a>
+        <div class="mt-3 flex items-center justify-center gap-4 text-xs uppercase tracking-[0.22em]">
+          <a class="hover:text-blue-300 transition" href="#privacy">Privacy</a>
+          <span class="text-slate-700">/</span>
+          <a class="hover:text-blue-300 transition" href="#terms">Terms</a>
+        </div>
+      </div>
+
+      <div class="md:text-right">
+        <p>© 2026 Neon Dust LLC</p>
+        <p class="mt-1">All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Cursor-follow background glow
+    window.addEventListener("pointermove", (event) => {
+      document.documentElement.style.setProperty("--mx", `${event.clientX}px`);
+      document.documentElement.style.setProperty("--my", `${event.clientY}px`);
+    }, { passive: true });
+
+    // Reveal animations
+    const reveals = document.querySelectorAll(".reveal");
+    reveals.forEach((el, index) => {
+      el.style.transitionDelay = `${Math.min(index * 35, 220)}ms`;
+    });
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add("visible");
+      });
+    }, { threshold: 0.12 });
+
+    reveals.forEach((el) => revealObserver.observe(el));
+
+    // Scroll story active cards
+    const steps = document.querySelectorAll("[data-step]");
+    const stepObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          steps.forEach((step) => step.classList.remove("active"));
+          entry.target.classList.add("active");
+        }
+      });
+    }, { threshold: 0.55 });
+    steps.forEach((step) => stepObserver.observe(step));
+
+    // Spotlight + 3D tilt cards
+    document.querySelectorAll(".spotlight-card").forEach((card) => {
+      card.addEventListener("pointermove", (event) => {
+        const rect = card.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        card.style.setProperty("--card-x", `${x}px`);
+        card.style.setProperty("--card-y", `${y}px`);
+
+        const rotateX = ((y - rect.height / 2) / rect.height) * -5;
+        const rotateY = ((x - rect.width / 2) / rect.width) * 5;
+        card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
+      });
+
+      card.addEventListener("pointerleave", () => {
+        card.style.transform = "perspective(900px) rotateX(0) rotateY(0) translateY(0)";
+      });
+    });
+
+    // Mini merge demo
+    const values = [2, 2, 4, 8, 4, 8, 16, 16, 2, 4, 32, 8, 16, 32, 64, 64];
+    const grid = document.getElementById("gameGrid");
+    const particleLayer = document.getElementById("particleLayer");
+    const resetButton = document.getElementById("resetGame");
+    let selected = null;
+
+    function colorFor(value) {
+      const map = {
+        2: "linear-gradient(145deg, rgba(59,130,246,.60), rgba(30,41,59,.92))",
+        4: "linear-gradient(145deg, rgba(14,165,233,.60), rgba(30,41,59,.92))",
+        8: "linear-gradient(145deg, rgba(99,102,241,.65), rgba(30,41,59,.92))",
+        16: "linear-gradient(145deg, rgba(139,92,246,.66), rgba(30,41,59,.92))",
+        32: "linear-gradient(145deg, rgba(34,211,238,.58), rgba(30,41,59,.92))",
+        64: "linear-gradient(145deg, rgba(96,165,250,.78), rgba(15,23,42,.95))",
+        128: "linear-gradient(145deg, rgba(125,211,252,.82), rgba(30,64,175,.86))"
+      };
+      return map[value] || map[128];
+    }
+
+    function renderGame() {
+      grid.innerHTML = "";
+      values.forEach((value, index) => {
+        const cell = document.createElement("button");
+        cell.className = "game-cell";
+        cell.textContent = value;
+        cell.style.background = colorFor(value);
+        cell.setAttribute("aria-label", `Tile ${value}`);
+        cell.addEventListener("click", (event) => handleCellClick(index, event.currentTarget));
+        grid.appendChild(cell);
+      });
+    }
+
+    function makeParticles(target) {
+      const layerRect = particleLayer.getBoundingClientRect();
+      const rect = target.getBoundingClientRect();
+      const cx = rect.left - layerRect.left + rect.width / 2;
+      const cy = rect.top - layerRect.top + rect.height / 2;
+
+      for (let i = 0; i < 12; i++) {
+        const p = document.createElement("span");
+        p.className = "particle";
+        p.style.left = `${cx}px`;
+        p.style.top = `${cy}px`;
+        const angle = (Math.PI * 2 * i) / 12;
+        const distance = 38 + Math.random() * 28;
+        p.style.setProperty("--dx", `${Math.cos(angle) * distance}px`);
+        p.style.setProperty("--dy", `${Math.sin(angle) * distance}px`);
+        particleLayer.appendChild(p);
+        setTimeout(() => p.remove(), 650);
+      }
+    }
+
+    function handleCellClick(index, element) {
+      if (selected === null) {
+        selected = index;
+        element.style.outline = "2px solid rgba(147,197,253,.9)";
+        element.style.transform = "scale(1.05)";
+        return;
+      }
+
+      const previous = grid.children[selected];
+
+      if (selected !== index && values[selected] === values[index]) {
+        values[index] *= 2;
+        values[selected] = values[Math.floor(Math.random() * values.length)] || 2;
+        makeParticles(element);
+        renderGame();
+        const newElement = grid.children[index];
+        newElement.classList.add("pop");
+        setTimeout(() => newElement.classList.remove("pop"), 380);
+      } else {
+        if (previous) {
+          previous.style.outline = "";
+          previous.style.transform = "";
+        }
+      }
+
+      selected = null;
+    }
+
+    resetButton.addEventListener("click", () => {
+      const base = [2, 2, 4, 8, 4, 8, 16, 16, 2, 4, 32, 8, 16, 32, 64, 64];
+      values.splice(0, values.length, ...base);
+      selected = null;
+      renderGame();
+    });
+
+    renderGame();
+  </script>
+</body>
+</html>
