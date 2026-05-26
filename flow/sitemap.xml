@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <sitemap>
-    <loc>https://www.neondustlabs.com/flow/sitemap.xml</loc>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://www.neondustlabs.com/cashora</loc>
     <lastmod>2026-05-23</lastmod>
-  </sitemap>
-</sitemapindex>
+  </url>
+  <url>
+    <loc>https://www.neondustlabs.com/cashora/support</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://www.neondustlabs.com/cashora/privacy</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://www.neondustlabs.com/cashora/terms</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+</urlset>
