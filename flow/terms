@@ -3,35 +3,35 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Flow Terms of Use - NeonDustLabs</title>
-  <meta name="description" content="Terms of use for the Flow app.">
-  <link rel="canonical" href="https://neondustlabs.com/flow/terms">
-  <link rel="stylesheet" href="/flow/assets/flow.css">
+  <title>Cashora Terms of Use - NeonDustLabs</title>
+  <meta name="description" content="Terms of use for the Cashora Budget Tracking app.">
+  <link rel="canonical" href="https://www.neondustlabs.com/cashora/terms">
+  <link rel="stylesheet" href="/cashora/assets/cashora.css">
 </head>
 <body>
   <main class="content">
     <nav class="nav" aria-label="Main navigation">
-      <a class="brand" href="/flow">
-        <span class="mark">F</span>
-        <span>Flow</span>
+      <a class="brand" href="/cashora">
+        <span class="mark">C</span>
+        <span>Cashora</span>
       </a>
       <div class="nav-links">
-        <a href="/flow">Home</a>
-        <a href="/flow/support">Support</a>
-        <a href="/flow/privacy">Privacy</a>
+        <a href="/cashora">Home</a>
+        <a href="/cashora/support">Support</a>
+        <a href="/cashora/privacy">Privacy</a>
       </div>
     </nav>
 
     <article class="panel article">
       <p class="eyebrow">Last updated: May 2026</p>
       <h1>Terms of Use</h1>
-      <p>These terms explain the basic conditions for using the Flow app. By using the app, you agree to these terms.</p>
+      <p>These terms explain the basic conditions for using the Cashora Budget Tracking app. By using the app, you agree to these terms.</p>
 
       <h2>Purpose</h2>
-      <p>Flow is designed for personal finance tracking. Users can manually manage income, expense, budget, category, and investment asset records.</p>
+      <p>Cashora Budget Tracking is designed for personal finance tracking. Users can manually manage income, expense, budget, category, and investment asset records.</p>
 
       <h2>Financial Responsibility</h2>
-      <p>Flow does not provide financial advice or investment advice. The investment screen is only for manual portfolio tracking and does not include trading orders, broker connections, or real-time market data.</p>
+      <p>Cashora Budget Tracking does not provide financial advice or investment advice. The investment screen is only for manual portfolio tracking and does not include trading orders, broker connections, or real-time market data.</p>
 
       <h2>User Data</h2>
       <p>Users are responsible for the accuracy of the information they enter. Calculated summaries, charts, and insights are based on user-entered data.</p>
@@ -46,13 +46,13 @@
       <p>App features and these terms may be updated over time. The latest version of these terms will be published on this page.</p>
 
       <h2>Web Addresses</h2>
-      <p>App page: <a href="https://neondustlabs.com/flow">https://neondustlabs.com/flow</a></p>
-      <p>Privacy policy: <a href="https://neondustlabs.com/flow/privacy">https://neondustlabs.com/flow/privacy</a></p>
-      <p>Support: <a href="https://neondustlabs.com/flow/support">https://neondustlabs.com/flow/support</a></p>
+      <p>App page: <a href="https://www.neondustlabs.com/cashora">https://www.neondustlabs.com/cashora</a></p>
+      <p>Privacy policy: <a href="https://www.neondustlabs.com/cashora/privacy">https://www.neondustlabs.com/cashora/privacy</a></p>
+      <p>Support: <a href="https://www.neondustlabs.com/cashora/support">https://www.neondustlabs.com/cashora/support</a></p>
     </article>
 
     <footer class="footer">
-      © 2026 NeonDustLabs · <a href="/flow">Flow</a>
+      © 2026 NeonDustLabs · <a href="/cashora">Cashora</a>
     </footer>
   </main>
 </body>
